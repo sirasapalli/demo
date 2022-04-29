@@ -1,0 +1,25 @@
+@Library('library')_
+node('built-in')
+{
+    stage('continuous download')
+    {
+        cicd.newgit("https://github.com/lprudhvi/maven.git")
+    }
+    stage('continuous build')
+    {
+        cicd.maven()
+    }
+    stage('continuous deployment')
+    {
+        cicd.deploy("http://172.31.1.81:8080","testapp")
+    }
+    stage('continuous testing')
+    {
+        cicd.newgit("https://github.com/lprudhvi/FunctionalTesting.git")
+        cicd.test("sharedlibrarysp")
+    }
+    stage('continuous delivery')
+    {
+        cicd.deploy("http://172.31.5.63:8080","prodapp")
+    }
+}
